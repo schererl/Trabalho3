@@ -1,0 +1,1 @@
+make & ./setpriority 10;

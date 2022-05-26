@@ -5,14 +5,61 @@
 #include <string.h>
 #include <linux/sched.h>
 
+#define SIZE_BUF 5000
+#define N_THREADS 4
 volatile int running = 1;
+
+char  mem[SIZE_BUF];
+int index_mem = 0; //semaforo
+pthread_mutex_t lock;
+
+int gambiarra = 0;
 
 void *run(void *data)
 {
-	while (running);
-
+	if((int)data == N_THREADS-1)
+		gambiarra = N_THREADS-1;
+	while(gambiarra != N_THREADS-1){}
+	
+	char d = 'a'+(int)data;
+	while (running){
+		
+		pthread_mutex_lock(&lock);
+		if(index_mem >= SIZE_BUF){
+			pthread_mutex_unlock(&lock);
+			break;
+		}
+		mem[index_mem] = d;
+		index_mem+=1;
+		pthread_mutex_unlock(&lock);
+	}
+			
 	return 0;
 }
+
+void printMem(char *mem){
+	char last_char = mem[0];
+	int char_counter[N_THREADS] = {0};
+	
+	printf("\n%c", mem[0]);
+	
+	char_counter[(int)last_char - (int)'a'] += 1;
+	for(int i = 1; i < SIZE_BUF;i++){
+		if(last_char != mem[i]){
+			last_char = mem[i];
+			printf("%c", mem[i]);
+		}
+				
+		char_counter[(int)last_char - (int)'a'] += 1;
+	}
+
+	printf("\n\nCHAR COUNTER:\n");
+
+	for(int i = 0; i < N_THREADS; i++){
+		printf("\t%c: %d\n", 'a' + i, char_counter[i]);
+	}	
+}
+
 
 void print_sched(int policy)
 {
@@ -56,6 +103,7 @@ int setpriority(pthread_t *thr, int newpolicy, int newpriority)
 		return -1;
 	}
 
+
 	pthread_getschedparam(*thr, &policy, &param);
 	printf("current: ");
 	print_sched(policy);
@@ -68,6 +116,7 @@ int setpriority(pthread_t *thr, int newpolicy, int newpriority)
 	pthread_getschedparam(*thr, &policy, &param);
 	printf("new: ");
 	print_sched(policy);
+	printf("priority: %d\n", newpriority);
 
 	return 0;
 }
@@ -75,20 +124,59 @@ int setpriority(pthread_t *thr, int newpolicy, int newpriority)
 int main(int argc, char **argv)
 {
 	int timesleep;
-	pthread_t thr;
-
+	pthread_t tid[N_THREADS];
+	
 	if (argc < 2){
 		printf("usage: ./%s <execution_time>\n\n", argv[0]);
 
 		return 0;
 	}
 
-	timesleep = atoi(argv[1]);
-	pthread_create(&thr, NULL, run, NULL);
-	setpriority(&thr, SCHED_FIFO, 1);
-	sleep(timesleep);
-	running = 0;
-	pthread_join(thr, NULL);
+	if (pthread_mutex_init(&lock, NULL) != 0) {
+	        printf("\n mutex init has failed\n");
+        	return 1;
+    	}
 
+	int erro;
+
+	
+	//timesleep = atoi(argv[1]);
+	for(int i = 0; i < N_THREADS; i++){
+		//printf("create %d %c\n", i, 'a'+i);
+		
+		erro = pthread_create(&tid[i], NULL, run, (void*)i);
+		
+		if(erro != 0)
+			printf("THREAD ERRO MOTHERFUCKER\n");
+
+		setpriority(&tid[i], SCHED_OTHER,0);
+		/*
+		if(i == 2){
+			setpriority(&tid[i], SCHED_OTHER, sched_get_priority_max(SCHED_OTHER));
+		}	
+		else{
+			setpriority(&tid[i], SCHED_OTHER, 1);
+		}
+		*/
+	}
+
+	//sleep(timesleep);
+	//running = 0;
+
+	for(int i = 0; i < N_THREADS; i++){
+		pthread_join(tid[i], NULL);
+		printf("done %d\n",i);
+	}
+	pthread_mutex_destroy(&lock);
+
+	//printf("%s\n", mem);
+	
+	/*
+	for(int i = 0; i < SIZE_BUF; i++){
+		printf("%c", mem[i]);
+	}
+	*/
+	printMem(mem);
+	printf("\n");
 	return 0;
 }
