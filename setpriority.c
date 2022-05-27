@@ -5,8 +5,8 @@
 #include <string.h>
 #include <linux/sched.h>
 
-#define SIZE_BUF 5000
-#define N_THREADS 4
+#define SIZE_BUF 1000000000
+#define N_THREADS 5
 volatile int running = 1;
 
 char  mem[SIZE_BUF];
@@ -17,10 +17,11 @@ int gambiarra = 0;
 
 void *run(void *data)
 {
+	/*
 	if((int)data == N_THREADS-1)
 		gambiarra = N_THREADS-1;
 	while(gambiarra != N_THREADS-1){}
-	
+	*/
 	char d = 'a'+(int)data;
 	while (running){
 		
@@ -149,15 +150,19 @@ int main(int argc, char **argv)
 		if(erro != 0)
 			printf("THREAD ERRO MOTHERFUCKER\n");
 
-		setpriority(&tid[i], SCHED_OTHER,0);
-		/*
-		if(i == 2){
-			setpriority(&tid[i], SCHED_OTHER, sched_get_priority_max(SCHED_OTHER));
+		//setpriority(&tid[i], SCHED_OTHER,0);
+		
+		
+		if(i == 3){
+		
+			setpriority(&tid[i], SCHED_RR, sched_get_priority_max(SCHED_RR));
 		}	
 		else{
-			setpriority(&tid[i], SCHED_OTHER, 1);
+			setpriority(&tid[i], SCHED_OTHER, 0);
 		}
-		*/
+		
+		
+		
 	}
 
 	//sleep(timesleep);
