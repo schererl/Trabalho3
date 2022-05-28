@@ -136,6 +136,7 @@ int main(int argc, char **argv)
 	        printf("\n mutex init has failed\n");
         	return 1;
 	}
+	pthread_mutex_lock(&simLock);
 
 	int erro;
 
@@ -166,10 +167,11 @@ int main(int argc, char **argv)
 
 	//sleep(timesleep);
 	//running = 0;
-
+	pthread_mutex_unlock(&simLock);
 	for(int i = 0; i < N_THREADS; i++){
 		pthread_join(tid[i], NULL);
-		printf("done %d\n",i);
+		//if(i+1 == N_THREADS)
+		//printf("done %d\n",i);
 	}
 	pthread_mutex_destroy(&lock);
 	pthread_mutex_destroy(&simLock);
