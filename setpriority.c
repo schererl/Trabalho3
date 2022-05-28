@@ -5,23 +5,22 @@
 #include <string.h>
 #include <linux/sched.h>
 
-#define SIZE_BUF 1000000000
+#define SIZE_BUF 10000
 #define N_THREADS 5
 volatile int running = 1;
 
 char  mem[SIZE_BUF];
 int index_mem = 0; //semaforo
-pthread_mutex_t lock;
+pthread_mutex_t simLock, lock;
 
 int gambiarra = 0;
 
 void *run(void *data)
 {
-	/*
-	if((int)data == N_THREADS-1)
-		gambiarra = N_THREADS-1;
-	while(gambiarra != N_THREADS-1){}
-	*/
+	//iniciar todas threads "simultaneamente"
+	pthread_mutex_lock(&simLock);
+	pthread_mutex_unlock(&simLock);
+	
 	char d = 'a'+(int)data;
 	while (running){
 		
@@ -133,10 +132,10 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
-	if (pthread_mutex_init(&lock, NULL) != 0) {
+	if (pthread_mutex_init(&lock, NULL) != 0 || pthread_mutex_init(&simLock, NULL) != 0) {
 	        printf("\n mutex init has failed\n");
         	return 1;
-    	}
+	}
 
 	int erro;
 
@@ -173,6 +172,7 @@ int main(int argc, char **argv)
 		printf("done %d\n",i);
 	}
 	pthread_mutex_destroy(&lock);
+	pthread_mutex_destroy(&simLock);
 
 	//printf("%s\n", mem);
 	
