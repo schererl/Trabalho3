@@ -1,0 +1,1 @@
+gcc test.c -o test && test 9 100 politica1 10
