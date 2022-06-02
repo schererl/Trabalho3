@@ -6,7 +6,7 @@
 #include <linux/sched.h>
 
 #define SIZE_BUF 10000
-#define N_THREADS 5
+#define N_THREADS 4
 volatile int running = 1;
 
 char  mem[SIZE_BUF];
@@ -123,6 +123,7 @@ int setpriority(pthread_t *thr, int newpolicy, int newpriority)
 
 int main(int argc, char **argv)
 {
+	//(KERN_EMERG "init");
 	int timesleep;
 	pthread_t tid[N_THREADS];
 	
@@ -132,6 +133,7 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
+	//(KERN_EMERG "thread init");
 	if (pthread_mutex_init(&lock, NULL) != 0 || pthread_mutex_init(&simLock, NULL) != 0) {
 	        printf("\n mutex init has failed\n");
         	return 1;
@@ -141,6 +143,7 @@ int main(int argc, char **argv)
 	int erro;
 
 	
+	//(KERN_EMERG "thread cre ");
 	//timesleep = atoi(argv[1]);
 	for(int i = 0; i < N_THREADS; i++){
 		//printf("create %d %c\n", i, 'a'+i);
@@ -153,17 +156,19 @@ int main(int argc, char **argv)
 		//setpriority(&tid[i], SCHED_OTHER,0);
 		
 		
-		if(i == 3){
+		if(i == 2){
 		
 			setpriority(&tid[i], SCHED_RR, sched_get_priority_max(SCHED_RR));
 		}	
 		else{
+			//setpriority(&tid[i], SCHED_RR, 1);
 			setpriority(&tid[i], SCHED_OTHER, 0);
 		}
 		
 		
 		
 	}
+	//(KERN_EMERG "run");
 
 	//sleep(timesleep);
 	//running = 0;
@@ -183,6 +188,7 @@ int main(int argc, char **argv)
 		printf("%c", mem[i]);
 	}
 	*/
+	//(KERN_EMERG "print");
 	printMem(mem);
 	printf("\n");
 	return 0;

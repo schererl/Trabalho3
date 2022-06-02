@@ -1,2 +1,2 @@
 make;
-taskset --cpu-list 2 ./setpriority 10;
+sudo taskset --cpu-list 1 ./setpriority 10;
