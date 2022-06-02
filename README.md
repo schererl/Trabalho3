@@ -1,8 +1,14 @@
 # Trabalho3
 
-Victor Putrich & Lucca Dornelles
+Victor Putrich, Lucca Dornelles e Guilherme Santos
 
 # Sobre
+
+## Introdução
+Este relatório visa apresentar e avaliar os resultados das execuções de um programa multithread e seus diferentes escalonamentos de acordo com a mudança de politica de escalonamento selecionada, além da mudança em ambientes de processamento multicore e single-core.
+
+## Objetivo
+O objetivo deste trabalho é a criação de um programa multithread com um número específico de threads que escrevem caracteres em um buffer global. A escrita no buffer é sincronizada, de forma que não ocorra sobrescrita de uma posição, pois assim é possivel verificar o escalonamento das threads durante a execução através da leitura do conteudo do buffer. Para facilitar a analise, ao concluir a execução o programa mostra a leitura do buffer e a contagem de quantas vezes cada caracter foi escalonado.
 
 # Funcionamento
 
@@ -15,3 +21,6 @@ Utilizamos dois objetos mutex para coordenar o funcionamento das threads.
 
 ### Output
 O output retornado pelo processo é uma lista de letras com letras duplicadas removidas (e.g. aaba -> aba), que representa a ordem de execução das threads. 
+
+## Testes
+Para a execução dos testes foram criados dois escripts o "runm" e "runs". O primeiro executa o programa "testm.c" que possibilita a execução do programa multithread configurando a politica de escalonamento para cada fila. Já o segundo executa o "tests.c" que possibilita o teste configurando uma politica de escalonamento para todas as filas.
