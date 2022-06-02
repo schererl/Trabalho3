@@ -1,0 +1,16 @@
+dbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdd
+serial8250: too much work for irq4
+dbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd4
+dbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbdd
+
+CHAR COUNTER:
+	a: 45
+	b: 226450
+	c: 207022
+	d: 566483
+
+trace-cmd record -e sched:sched_switch -F setpriority 4 1000000 SCHED_OTHER 0 
+SCHED_RR 1 SCHED_RR 1 SCHED_RR 10;trace-cmd report
+
+
+USO DE 2 CPUS

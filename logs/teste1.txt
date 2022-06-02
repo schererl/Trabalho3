@@ -1,0 +1,11 @@
+trace-cmd record -e sched:sched_switch -F setpriority 2 100000 SCHED_OTHER 0 S
+CHED_OTHER 0 SCHED_OTHER 0 SCHED_OTHER 0 SCHED_RR 10 && trace-cmd report
+
+cpu 1
+threads 2
+mem 100000
+
+1: SCHED_OTHER 0
+...
+5: SCHED_RR 10
+
