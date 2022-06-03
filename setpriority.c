@@ -5,6 +5,8 @@
 #include <string.h>
 #include <linux/sched.h>
 
+#define KB 1024
+
 int SIZE_BUF;// 1000000
 char*  mem;
 int index_mem = 0; 
@@ -153,7 +155,7 @@ int main(int argc, char **argv)
 
 	const int threads = atoi(argv[1]);
 	//int SIZE_BUF = atoi(argv[2]);
-	SIZE_BUF = atoi(argv[2]);
+	SIZE_BUF = atoi(argv[2]) * KB;
 	mem = (char*)malloc(sizeof(char)*SIZE_BUF);
 
 	if(argc < (threads*2)+3){
