@@ -94,3 +94,32 @@ void *run(void *data)
 
 ## Testes
 
+Para os testes rodados, primeiro foi definido um critério de análise das políticas. Como tempos uma gama de escalonadores e podemos usar diferentes métodos em diferentes threads, vamos definir primeiro situações interessantes para avaliarmos:
+
+ * **Single-core:** Para que possamos verificar o comportamento puro de cada política, devemos executá-las em single-core para um número pequeno de threads. Dessa maneira, se usarmos, por exemplo uma mesma política real-time com threads diferentes, porém variando o valor de prioridade, poderemos verificar a organização da fila das threads, assim como a execução da mesma e troca de contexto. Nesse caso, executará somente a thread com maior prioridade, independete se for FIFO ou RR.
+
+ * **Multi-core:** Usando mais de uma cpu na execução do programa, podemos avaliar como o escalonado atribui para cada cpu os processos a partir da sua política e prioridade. Dessa vez, tomando o exemplo anterior, a thread de maior prioridade deve ficar ocupando uma das cpu o tempo todo, enquanto as outras threads que tenham prioridade inferior e igual, devem disputar o uso da cpu disponível.
+
+ * **Política Igual:** Vamos testar também testes com multiplas threads execurando a mesma política, poderemos verificar se o escalonamento condiz com a descrição do comportamento de cada política conforme descrito anteriormente.
+ 
+ * **Classes Diferentes:** Veremos como o escalonador se comporta quando rodamos threads que estão usam alguma das políticas da classe CFS, assim como políticas de classe real-time. Podemoremos acompanhar o escalonamento destas usando 1, 2 ou + cpus. 
+
+### Teste N
+A tabela abaixo descreve a configuração usada para este teste, nele testaremos o comportamento do escalonador mesclando 4 escalonados CSF Other, com uma política real-time com prioridade máxima com 2 CPUs. O comportamento esperado é que uma das cpus fique 100% do tempo ocupada pela política RR e a outra utilize a sua lógica de escalonamento para escalonar as diferentes threads:
+
+CPU|MEM(kb)|Threads|th1|th2|th3|th4|thr5|
+--- | --- | --- |  --- | --- |  --- | --- |  --- |
+2|97656|5|SCHED OTHER 0|SCHED OTHER 0|SCHED OTHER 0|SCHED OTHER 0|SCHED RR 99|
+
+O resultado que tivemos foi o esperado e podemos visualizá-lo com o kernelShark:
+
+<p align="center"><img src="https://github.com/schererl/Trabalho3/blob/master/logs/teste7.png" width="1000"/></p>
+
+O resultado indica que a CPU 1 ficou 100% do tempo ocupada pela mesma thread de cor azul. Mesmo quando o escalonador a remove da cpu, ela é reescalonada novamente, isso ocorre quando aparece linhas amareladas ao longo da execução. Já a CPU 0 intercala de forma bem padronizada as outras threads, afinal estas são de mesma classe e sua prioridade é dinâmica, dado pelo seu "nice value".
+
+A imagem se encontra [aqui](https://github.com/schererl/Trabalho3/blob/master/logs/teste7.png) e o arquivo .dat para ser aberto no kernelSHark se encontra [aqui](https://github.com/schererl/Trabalho3/blob/master/logs/trace7.dat).
+ 
+
+
+
+
