@@ -119,9 +119,9 @@ Contagem letras:
 - (PID 12255) d: 248892KB
 
  <p float="left">
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste1/ks-img.png" width="900">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste1/ks-img.png" width="850">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste1/colors.png" width="100"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste1/colors.png" width="70"/>
  </p>
  
 
@@ -139,9 +139,9 @@ Contagem letras:
 - (PID 10159) d: 239KB
 
  <p float="left">
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/KS-img.png" width="900">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/KS-img.png" width="850">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/colors.png" width="100"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/colors.png" width="70"/>
  </p>
  
  
@@ -159,9 +159,9 @@ Contagem letras:
 - (PID 10665) d: 0KB
  
  <p float="left">
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/ks-img.png" width="900">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/ks-img.png" width="850">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/colors.png" width="100"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/colors.png" width="70"/>
  </p>
 
 ### Teste 4
@@ -178,9 +178,9 @@ Contagem letras:
 - (PID 11748) d: 283628KB
 
  <p float="left">
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/ks-img.png" width="900">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/ks-img.png" width="850">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/color.png" width="100"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/color.png" width="70"/>
  </p>
  
  
@@ -203,9 +203,9 @@ Contagem letras:
 - (PID 12921) h: 34169KB
 
  <p float="left">
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/ks-img.png" width="900">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/ks-img.png" width="850">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/colors.png" width="100"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/colors.png" width="70"/>
  </p>
  
  
@@ -227,9 +227,9 @@ Contagem letras:
 - (PID 13465) h: 21119KB
 
  <p float="left">
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/ks-img.png" width="900">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/ks-img.png" width="850">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/colors.png" width="100"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/colors.png" width="70"/>
  </p>
 
 
