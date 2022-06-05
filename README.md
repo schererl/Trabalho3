@@ -104,22 +104,133 @@ Para os testes rodados, primeiro foi definido um critério de análise das polí
  
  * **Classes Diferentes:** Veremos como o escalonador se comporta quando rodamos threads que estão usam alguma das políticas da classe CFS, assim como políticas de classe real-time. Podemoremos acompanhar o escalonamento destas usando 1, 2 ou + cpus. 
 
-### Teste N
+### Teste 1
 A tabela abaixo descreve a configuração usada para este teste, nele testaremos o comportamento do escalonador mesclando 4 escalonados CSF Other, com uma política real-time com prioridade máxima com 2 CPUs. O comportamento esperado é que uma das cpus fique 100% do tempo ocupada pela política RR e a outra utilize a sua lógica de escalonamento para escalonar as diferentes threads:
 
-CPU|MEM(kb)|Threads|th1|th2|th3|th4|thr5|
---- | --- | --- |  --- | --- |  --- | --- |  --- |
-2|97656|5|SCHED OTHER 0|SCHED OTHER 0|SCHED OTHER 0|SCHED OTHER 0|SCHED RR 99|
+CPU|MEM(kb)|Threads|th1|th2|th3|th4|
+--- | --- | --- |  --- | --- |  --- | --- |
+1|1000000|4|OTHER 0|OTHER 0|OTHER 0|OTHER 0|
 
-O resultado que tivemos foi o esperado e podemos visualizá-lo com o kernelShark:
+Contagem letras:
 
-<p align="center"><img src="https://github.com/schererl/Trabalho3/blob/master/logs/teste7.png" width="1000"/></p>
+- (PID 12252) a: 249288KB
+- (PID 12253) b: 250688KB
+- (PID 12254) c: 251130KB
+- (PID 12255) d: 248892KB
 
-O resultado indica que a CPU 1 ficou 100% do tempo ocupada pela mesma thread de cor azul. Mesmo quando o escalonador a remove da cpu, ela é reescalonada novamente, isso ocorre quando aparece linhas amareladas ao longo da execução. Já a CPU 0 intercala de forma bem padronizada as outras threads, afinal estas são de mesma classe e sua prioridade é dinâmica, dado pelo seu "nice value".
-
-A imagem se encontra [aqui](https://github.com/schererl/Trabalho3/blob/master/logs/teste7.png) e o arquivo .dat para ser aberto no kernelSHark se encontra [aqui](https://github.com/schererl/Trabalho3/blob/master/logs/trace7.dat).
+ <p float="left">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste1/ks-img.png" width="900">
+  
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste1/colors.png" width="100"/>
+ </p>
  
 
+### Teste 2 
+
+CPU|MEM(kb)|Threads|th1|th2|th3|th4|
+--- | --- | --- |  --- | --- |  --- | --- |
+1|10000|4|BATCH 0|BATCH 0|BATCH 0|BATCH 0|
+
+Contagem letras:
+
+- (PID 10156) a: 3442KB
+- (PID 10157) b: 3167KB
+- (PID 10158) c: 3150KB
+- (PID 10159) d: 239KB
+
+ <p float="left">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/KS-img.png" width="900">
+  
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/colors.png" width="100"/>
+ </p>
+ 
+ 
+### Teste 3
+
+CPU|MEM(kb)|Threads|th1|th2|th3|th4|
+--- | --- | --- |  --- | --- |  --- | --- |
+1|100000|4|FIFO 1|FIFO 1|FIFO 1|FIFO 1|
+
+Contagem letras:
+
+- (PID 10662) a: 100000KB
+- (PID 10663) b: 0KB
+- (PID 10664) c: 0KB
+- (PID 10665) d: 0KB
+ 
+ <p float="left">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/ks-img.png" width="900">
+  
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/colors.png" width="100"/>
+ </p>
+
+### Teste 4
+
+CPU|MEM(kb)|Threads|th1|th2|th3|th4|
+--- | --- | --- |  --- | --- |  --- | --- |
+1|1000000|4|SCHED_RR 99|SCHED_RR 99|SCHED_RR 99|SCHED_RR 99|
+
+Contagem letras:
+
+- (PID 11745) a: 303013KB
+- (PID 11746) b: 219496KB
+- (PID 11747) c: 193862KB
+- (PID 11748) d: 283628KB
+
+ <p float="left">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/ks-img.png" width="900">
+  
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/color.png" width="100"/>
+ </p>
+ 
+ 
+ 
+### Teste 5
+
+CPU|MEM(kb)|Threads|th1|th2|th3|th4|th5|th6|th7|th8|
+--- | --- | --- |  --- | --- |  --- | --- |  --- | --- |  --- | --- |
+2|100000|8|OTHER 0|OTHER 0|OTHER 0|OTHER 0|OTHER 0|OTHER 0|OTHER 0|RR 1|
+
+Contagem letras:
+
+- (PID 12914) a: 9581KB
+- (PID 12915) b: 9488KB
+- (PID 12916) c: 9483KB
+- (PID 12917) d: 9449KB
+- (PID 12918) e: 9265KB
+- (PID 12919) f: 9614KB
+- (PID 12920) g: 8945KB
+- (PID 12921) h: 34169KB
+
+ <p float="left">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/ks-img.png" width="900">
+  
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/colors.png" width="100"/>
+ </p>
+ 
+ 
+### Teste 6
+
+CPU|MEM(kb)|Threads|th1|th2|th3|th4|th5|th6|th7|th8|
+--- | --- | --- |  --- | --- |  --- | --- |  --- | --- |  --- | --- |
+4|100000|8|OTHER 0|FIFO 0|RR 1|FIFO 1|FIFO 1|RR 10|FIFO 10|RR 10|
+
+Contagem letras:
+
+- (PID 13458) a: 2502KB
+- (PID 13459) b: 2494KB
+- (PID 13460) c: 9982KB
+- (PID 13461) d: 9945KB
+- (PID 13462) e: 9850KB
+- (PID 13463) f: 21021KB
+- (PID 13464) g: 23083KB
+- (PID 13465) h: 21119KB
+
+ <p float="left">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/ks-img.png" width="900">
+  
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/colors.png" width="100"/>
+ </p>
 
 
 
