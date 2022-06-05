@@ -4,11 +4,12 @@
 #include <unistd.h>
 #include <string.h>
 #include <linux/sched.h>
-
+#include <syscall.h>
 #define KB 1024
 
 int SIZE_BUF;// 1000000
 char*  mem;
+int* pids;
 int index_mem = 0; 
 pthread_mutex_t simLock, lock;
 
@@ -19,10 +20,12 @@ void *run(void *data)
 	pthread_mutex_lock(&simLock);
 	pthread_mutex_unlock(&simLock);
 	
-	char d = 'a'+(int)data;
+	char letter = 'a'+(int)data;
+	
+	pids[(int)data] = syscall(SYS_gettid);
 	while (index_mem <= SIZE_BUF){		
 		pthread_mutex_lock(&lock);
-		mem[index_mem] = d;
+		mem[index_mem] = letter;
 		index_mem+=1;
 		pthread_mutex_unlock(&lock);
 	}
@@ -35,13 +38,13 @@ void printMem(char *mem, const int threads){
 	//int char_counter[threads] = {0};
 	int *char_counter = malloc(sizeof(int) * threads);
 
-	printf("\n%c", mem[0]);
+	//printf("\n%c", mem[0]);
 	
 	char_counter[(int)last_char - (int)'a'] += 1;
 	for(int i = 1; i < SIZE_BUF;i++){
 		if(last_char != mem[i]){
 			last_char = mem[i];
-			printf("%c", mem[i]);
+	//		printf("%c", mem[i]);
 		}
 				
 		char_counter[(int)last_char - (int)'a'] += 1;
@@ -50,7 +53,7 @@ void printMem(char *mem, const int threads){
 	printf("\n\nCHAR COUNTER:\n");
 
 	for(int i = 0; i < threads; i++){
-		printf("\t%c: %d\n", 'a' + i, char_counter[i]);
+		printf("(PID %d) %c: %dKB\n", pids[i], 'a' + i, (int)char_counter[i]/KB);
 	}	
 }
 
@@ -157,7 +160,7 @@ int main(int argc, char **argv)
 	//int SIZE_BUF = atoi(argv[2]);
 	SIZE_BUF = atoi(argv[2]) * KB;
 	mem = (char*)malloc(sizeof(char)*SIZE_BUF);
-
+	
 	if(argc < (threads*2)+3){
 
 		printf("número de argumentos insuficientes:\n");
@@ -168,7 +171,7 @@ int main(int argc, char **argv)
 
 	char* policy[threads];
 	int prior[threads];
-
+	pids = (int *)malloc(sizeof(int)*threads);
 	for(int t = 0; t < threads; t++){
 
 		int offset = (2*t);
@@ -190,7 +193,6 @@ int main(int argc, char **argv)
 		//printf("create %d %c\n", i, 'a'+i);
 		
 		erro = pthread_create(&tid[i], NULL, run, (void*)i);
-		
 		if(erro != 0){
 			printf("THREAD ERRO\n");
 			return 1;
