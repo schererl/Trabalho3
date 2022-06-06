@@ -1,10 +1,21 @@
-sudo taskset --cpu-list 1 ./run 4 1000000 SCHED_RR 99 SCHED_RR 99 SCHED_RR 99 SCHED_RR 99 
-
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_RR PRI_MIN: 1 PRI_MAX: 99
+priority: 1
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_RR PRI_MIN: 1 PRI_MAX: 99
+priority: 1
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_RR PRI_MIN: 1 PRI_MAX: 99
+priority: 1
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_RR PRI_MIN: 1 PRI_MAX: 99
+priority: 1
 
 
 CHAR COUNTER:
-(PID 11745) a: 303013KB
-(PID 11746) b: 219496KB
-(PID 11747) c: 193862KB
-(PID 11748) d: 283628KB
+(PID 5885) a: 12421KB
+(PID 5886) b: 50875KB
+(PID 5887) c: 75794KB
+(PID 5888) d: 60909KB
 
+sudo taskset --cpu-list 1 ~/Trabalho3/./run 4 200000 sched_rr 1 sched_rr 1 sched_rr 1 sched_rr 1
