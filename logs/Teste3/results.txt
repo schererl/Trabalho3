@@ -1,0 +1,21 @@
+sudo taskset --cpu-list 1 ~/Trabalho3/./run 4 200000 sched_fifo 1 sched_fifo 1 sched_fifo 1 sched_fifo 1
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_FIFO PRI_MIN: 1 PRI_MAX: 99
+priority: 1
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_FIFO PRI_MIN: 1 PRI_MAX: 99
+priority: 1
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_FIFO PRI_MIN: 1 PRI_MAX: 99
+priority: 1
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_FIFO PRI_MIN: 1 PRI_MAX: 99
+priority: 1
+
+
+CHAR COUNTER:
+(PID 5964) a: 200000KB
+(PID 5965) b: 0KB
+(PID 5966) c: 0KB
+(PID 5967) d: 0KB
+
