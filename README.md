@@ -172,7 +172,7 @@ Contagem letras:
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/ks-img.png" width="800">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/colors.png" width="50"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/colos.png" width="50"/>
  </p>
 
 ## Teste 4
@@ -193,7 +193,7 @@ Contagem letras:
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/ks-img.png" width="800">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/color.png" width="50"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/colo.png" width="50"/>
  </p>
  
  
