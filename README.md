@@ -203,10 +203,10 @@ Contagem letras:
 - (PID 5887) c: 75794KB
 - (PID 5888) d: 60909KB
 
-No teste do Round Robin foram utilizadas 4 threads com prioridade igual. Aqui, conseguimos comparar a diferença das duas políticas de mesma classe, round robin e fifo. Na política round-robin, conseguimos ver que a o escalonador ao verificar que todos processos que estavam na fila real-time tinham mesma prioridade, passou a atribuir a execução da cpu de forma a respeitar o *quantum*. Um comportamente que fica fácil de identificar quando visualizamos o log de trocas de contexto no wireshark é que muitas vezes o *quantum* de uma task acaba enquanto a thread está com o lock do mutex. Ou seja está na zona crítica de execução, isso faz com que a thread que seria a pŕoxima a ser executada pelo escalonador não consiga de fato acesso à memória. O escalonador então vai se movendo pela fila até chegar no final dela, dando a execução novamente à thread que está com o lock. A média de acesso por thread foi de 49999KB com desvio-padrão de 27063. Quando comparamos a média e desvio-padrão do Teste 4 para o Teste 1,
+No teste do Round Robin foram utilizadas 4 threads com prioridade igual. Aqui, conseguimos comparar a diferença das duas políticas de mesma classe, round robin e fifo. Na política round-robin, conseguimos ver que a o escalonador ao verificar que todos processos que estavam na fila real-time tinham mesma prioridade, passou a atribuir a execução da cpu de forma a respeitar o *quantum*. Um comportamente que fica fácil de identificar quando visualizamos o log de trocas de contexto no wireshark é que muitas vezes o *quantum* de uma task acaba enquanto a thread está com o lock do mutex. Ou seja está na zona crítica de execução, isso faz com que a thread que seria a pŕoxima a ser executada pelo escalonador não consiga de fato acesso à memória. O escalonador então vai se movendo pela fila até chegar no final dela, dando a execução novamente à thread que está com o lock. 
+
+A média de acesso por thread foi de 49999KB com desvio-padrão de 27063. O desvio padrão é relativamente alto já que estamos testando uma política que busca distribuir igualitariamente o uso da cpu, acreditamos que existam duas explicações para isso. A primeira como comentado anteriormente, devido a nossa aplicação ter zona crítica, acaba alterando a ordem de execução da política que tenta passar a cpu para a próxima thread da fila mas não cosnegue. Outra explicação e que acreditamos que iria acabar reduzindo o primeiro problema seria destinar um maior tamanho de memória, dessa forma a política teria oportunidade de reduzir o desvio-padrão gradativamente.
  
-
-
 
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/ks-img.png" width="800">
@@ -218,11 +218,13 @@ No teste do Round Robin foram utilizadas 4 threads com prioridade igual. Aqui, c
  
 ## Teste 5
 
-O algoritmo other procura balancear as threads por tempo, o que gera uma contagem de letras ainda mais parelha e intercalada para os primeiros 7 processos, enquanto a última thread recebe um tempo muito menor devido a sua prioridade maior. O kernel shark mostra que essa thread dominou a segunda CPU, rodando sempre que possível, enquanto as outras ficaram limitadas a primeira CPU.
+No teste 5 passamos a configuração a execução do programa para que seja executada em 2 cpus.
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|th5|th6|th7|th8|
 --- | --- | --- |  --- | --- |  --- | --- |  --- | --- |  --- | --- |
 2|100000|8|OTHER 0|OTHER 0|OTHER 0|OTHER 0|OTHER 0|OTHER 0|OTHER 0|RR 1|
+
+O objetivo desse teste é verificar o que ocorre quando existem threads de diferentes classes (CFS e real-time)
 
 Contagem letras:
 
@@ -235,20 +237,25 @@ Contagem letras:
 - (PID 12920) g: 8945KB
 - (PID 12921) h: 34169KB
 
+
+O algoritmo other procura balancear as threads pelo *nice value*, o que gera uma contagem de letras ainda mais parelha e intercalada para os primeiros 7 processos, enquanto a última thread toma conta da segunda cpu e fica com ela ao longo de toda execução.
+
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/ks-img.png" width="800">
   
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/colors.png" width="50"/>
  </p>
  
+ Em alguns momentos tivemos uma certa "instabilidade" na distribuição da primeira cpu, aparecendo inclusive alguns espaços em branco. Estes espaços são ocupados por processos fora da execução da nossa aplicação. Usamos um filtro para que apareçam somente tasks que nos interessam para este trabalho.
  
 ## Teste 6
-
-Nesse teste de algoritmos escalonamento de tempo real pode-se ver que threads de prioridade igual executaram por tempos semelhantes mesmo com politicas diferentes. Por ter uma prioridade consideravelmente maior, as últimas três threads praticamente dominaram três das quatro CPUs, mas ainda foram intercalados outros processos entre suas execuções devido as propriedades anti-starvation dos algoritmos utilizados.
+O teste 6 foi feito com o objetivo de avaliarmos o comportamente de um grande número de threads com diferentes políticas e prioridades:
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|th5|th6|th7|th8|
 --- | --- | --- |  --- | --- |  --- | --- |  --- | --- |  --- | --- |
 4|100000|8|OTHER 0|OTHER 0|RR 1|FIFO 1|FIFO 1|RR 10|FIFO 10|RR 10|
+
+Usamos 4 cpus para a execução de 8 threads. Três delas tem prioridade 10 e real-time. Queremos ver o que acontece com a última cpu que acreditamso que será a disputada. Pensamos que as threads com FIFO 1 e RR 1  irão alternar o seu uso.
 
 Contagem letras:
 
@@ -260,6 +267,10 @@ Contagem letras:
 - (PID 13463) f: 21021KB
 - (PID 13464) g: 23083KB
 - (PID 13465) h: 21119KB
+
+Surpreendentemente, todas threads conseguiram acesso à alguma das cpus. As threads 13463, 13464,13465 como tinham maior prioridade, receberam praticamente cada uma, uma cpu para sí. No entano a cpu que restou ficou sendo distribuida entre as outras threads, mas o que não era esperado era que mesmo as threads 13458 e 13459 sendo SCHED_OTHER, ambas ainda sim tiveram um tempo reservado a elas para execução.
+
+A situação ocorrida no teste anterior, se repetiu neste. Algumas vezes a cpu era atribuído para uma thread externa ao programa. O interessante é que quando a cpu retorna a executar algumas das threads do programa, por um curto espaço de tempo podemos ver que as threads 13458 e 13459 ocupam a cpu.
 
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/ks-img.png" width="800">
