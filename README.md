@@ -265,7 +265,7 @@ Contagem letras:
 - (PID 13864) g: 26804KB
 - (PID 13865) h: 64854KB
 
-Surpreendentemente, todas threads conseguiram acesso à alguma das cpus. A thread 8 (13865) como tinha maior prioridade, recebeu praticamente uma cpu para sí. As cpus restantes foram disputadas principalmente pelas threads *real-time* com prioridade 1 (threads 3,4,5,6 e 7). Curiosamente, as threads 0 e 1 da classe CFS também tiveram seu tempo, mesmo que ínfimo para executar algum trabalho. Se aproximarmos o gráfico, podemos ver que por curtos momentos a thread 1 e 2 assumem a cpu, no momento que as threads *real-time* trocam de contexto.
+Surpreendentemente, todas threads conseguiram acesso à alguma das cpus. A thread 8 (13865) como tinha maior prioridade, recebeu praticamente uma cpu para sí. As cpus restantes foram disputadas principalmente pelas threads *real-time* com prioridade 1 (threads 3,4,5,6 e 7). Curiosamente, as threads 1 e 2 da classe CFS também tiveram seu tempo, mesmo que ínfimo para executar algum trabalho. Se aproximarmos o gráfico, podemos ver que por curtos momentos a thread 1 e 2 assumem a cpu, no momento que as threads *real-time* trocam de contexto.
 
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/ks-img.png" width="800">
