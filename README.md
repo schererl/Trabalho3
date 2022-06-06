@@ -133,7 +133,7 @@ Podemos verificar que tanto a saída textual, apresentada acima, como a saída g
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste1/ks-img.png" width="800">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste1/colors.png" width="50"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste1/colors.png" width="40"/>
  </p>
  
 
@@ -157,7 +157,7 @@ Acreditamos que para este teste, o batch deve ter comportamento semelhante à po
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/KS-img.png" width="800">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/colors.png" width="50"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/colors.png" width="40"/>
  </p>
  
  
@@ -183,7 +183,7 @@ O terceiro teste utiliza a politica FIFO que roda o primeiro processo até ele a
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/ks-img.png" width="800">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/colos.png" width="50"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/colors.png" width="40"/>
  </p>
 
 ## Teste 4
@@ -211,7 +211,7 @@ A média de acesso por thread foi de 49999KB com desvio-padrão de 27063. O desv
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/ks-img.png" width="800">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/colo.png" width="50"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/colors.png" width="40"/>
  </p>
  
  
@@ -243,7 +243,7 @@ O algoritmo other procura balancear as threads pelo *nice value*, o que gera uma
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/ks-img.png" width="800">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/colors.png" width="50"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/colors.png" width="25"/>
  </p>
  
  Em alguns momentos tivemos uma certa "instabilidade" na distribuição da primeira cpu, aparecendo inclusive alguns espaços em branco. Estes espaços são ocupados por processos fora da execução da nossa aplicação. Usamos um filtro para que apareçam somente tasks que nos interessam para este trabalho.
@@ -253,20 +253,20 @@ O teste 6 foi feito com o objetivo de avaliarmos o comportamente de um grande n�
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|th5|th6|th7|th8|
 --- | --- | --- |  --- | --- |  --- | --- |  --- | --- |  --- | --- |
-4|100000|8|OTHER 0|OTHER 0|RR 1|FIFO 1|FIFO 1|RR 10|FIFO 10|RR 10|
+3|200000|8|OTHER 0|OTHER 0|RR 1|FIFO 1|RR 1|RR 1|RR 1|RR 10|
 
-Usamos 4 cpus para a execução de 8 threads. Três delas tem prioridade 10 e real-time. Queremos ver o que acontece com a última cpu que acreditamso que será a disputada. Pensamos que as threads com FIFO 1 e RR 1  irão alternar o seu uso.
+Usamos 3 cpus para a execução de 8 threads. Três delas tem prioridade 10 e real-time. Queremos ver o que acontece com a última cpu que acreditamso que será a disputada. Pensamos que as threads com FIFO 1 e RR 1  irão alternar o seu uso.
 
 Contagem letras:
 
-- (PID 13458) a: 2502KB
-- (PID 13459) b: 2494KB
-- (PID 13460) c: 9982KB
-- (PID 13461) d: 9945KB
-- (PID 13462) e: 9850KB
-- (PID 13463) f: 21021KB
-- (PID 13464) g: 23083KB
-- (PID 13465) h: 21119KB
+- (PID 13858) a: 364KB
+- (PID 13859) b: 345KB
+- (PID 13860) c: 26962KB
+- (PID 13861) d: 27097KB
+- (PID 13862) e: 26859KB
+- (PID 13863) f: 26711KB
+- (PID 13864) g: 26804KB
+- (PID 13865) h: 64854KB
 
 Surpreendentemente, todas threads conseguiram acesso à alguma das cpus. As threads 13463, 13464,13465 como tinham maior prioridade, receberam praticamente cada uma, uma cpu para sí. No entano a cpu que restou ficou sendo distribuida entre as outras threads, mas o que não era esperado era que mesmo as threads 13458 e 13459 sendo SCHED_OTHER, ambas ainda sim tiveram um tempo reservado a elas para execução.
 
@@ -275,7 +275,7 @@ A situação ocorrida no teste anterior, se repetiu neste. Algumas vezes a cpu e
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/ks-img.png" width="800">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/colors.png" width="50"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/colors.png" width="25"/>
  </p>
 
 
