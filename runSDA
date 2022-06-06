@@ -1,7 +1,0 @@
-export LINUX_OVERRIDE_SRCDIR=~/linuxdistro/linux-4.13.9/
-
-make -C modules/sstf-iosched-skeleton/ 
-make -C modules/simple_driver/
-make
-qemu-system-i386 --kernel output/images/bzImage --hda output/images/rootfs.ext2 --hdb sdb.bin --nographic --append "console=ttyS0 root=/dev/sda" --smp cpus=1
-
