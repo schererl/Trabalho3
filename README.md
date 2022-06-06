@@ -5,16 +5,8 @@ Victor Putrich, Lucca Dornelles e Guilherme Santos
 <!--ts-->
    * [Introdução](#Introdução)
    * [Escalonadores](#Escalonadores)
-   * [CFS](##CFS)
-   * [Real-time](##Real-time)
    * [Implementação](#Implementação)
    * [Testes](#Testes)
-   * [Teste 1](##Teste1)
-   * [Teste 2](##Teste2)
-   * [Teste 3](##Teste3)
-   * [Teste 4](##Teste4)
-   * [Teste 5](##Teste5)
-   * [Teste 6](##Teste6)
 <!--te-->
 
 
@@ -136,7 +128,7 @@ Contagem letras:
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste1/ks-img.png" width="800">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste1/colors.png" width="70"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste1/colors.png" width="50"/>
  </p>
  
 
@@ -156,7 +148,7 @@ Contagem letras:
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/KS-img.png" width="800">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/colors.png" width="70"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/colors.png" width="50"/>
  </p>
  
  
@@ -174,9 +166,9 @@ Contagem letras:
 - (PID 10665) d: 0KB
  
  <p float="left">
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/ks-img.png" width="800">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/ks-img.png" width="650">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/colors.png" width="70"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/colors.png" width="50"/>
  </p>
 
 ## Teste 4
@@ -195,7 +187,7 @@ Contagem letras:
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/ks-img.png" width="800">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/color.png" width="70"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/color.png" width="50"/>
  </p>
  
  
@@ -220,7 +212,7 @@ Contagem letras:
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/ks-img.png" width="800">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/colors.png" width="70"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/colors.png" width="50"/>
  </p>
  
  
@@ -244,7 +236,7 @@ Contagem letras:
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/ks-img.png" width="800">
   
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/colors.png" width="70"/>
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/colors.png" width="50"/>
  </p>
 
 
