@@ -112,11 +112,13 @@ Para os testes rodados, primeiro foi definido um critério de análise das polí
 
 ## Teste 1
 
-A tabela abaixo descreve a configuração usada para este teste, nele testaremos o comportamento do escalonador mesclando 4 escalonados CSF Other, com uma política real-time com prioridade máxima com 2 CPUs. O comportamento esperado é que uma das cpus fique 100% do tempo ocupada pela política RR e a outra utilize a sua lógica de escalonamento para escalonar as diferentes threads:
+A tabela abaixo descreve a configuração usada para este teste, avaliaremos o comportamento de 4 escalonados CSF Other.
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|
 --- | --- | --- |  --- | --- |  --- | --- |
 1|1000000|4|OTHER 0|OTHER 0|OTHER 0|OTHER 0|
+
+O resultado da execyção foi:
 
 Contagem letras:
 
@@ -124,6 +126,9 @@ Contagem letras:
 - (PID 12253) b: 250688KB
 - (PID 12254) c: 251130KB
 - (PID 12255) d: 248892KB
+
+Podemos verificar que tanto a saída textual, apresentada acima, como a saída gráfica de execução na ferramenta kernelshark mostra o comportamento do escalonador com um distribuição muito parelha entra todas as tasks executadas. Todas tiveram tiver um tempo de uso de cpu parelho, apresentando uma média de 249999KB por thread e desvio padrão 1077.
+
 
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste1/ks-img.png" width="800">
@@ -147,6 +152,8 @@ Contagem letras:
 - (PID 10158) c: 3150KB
 - (PID 10159) d: 239KB
 
+Acreditamos que para este teste, o batch deve ter comportamento semelhante à política do SCHED_OTHER, pela execução do programa não tratar ou esperar nenhum tipo de interrupção. A discrepância da quarta thread com as anteriores se da, por termos usado uma quantidade muito pequena de memória a ser escrita. A visualização gráfica da execução nos mostra a semelhança no comportamento da política em relação ao teste 1.
+
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/KS-img.png" width="800">
   
@@ -155,20 +162,24 @@ Contagem letras:
  
  
 ## Teste 3
-
-O terceiro teste utiliza a politica FIFO que roda o primeiro processo até ele acabar, for interrompido, ou preemptado por outro com prioridade maior. Como as prioridades são iguais só o primeiro processo conseguiu rodar, o que é o esperado.
+A configuração do teste 3 se encontra na tabela abaixo:
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|
 --- | --- | --- |  --- | --- |  --- | --- |
-1|100000|4|FIFO 1|FIFO 1|FIFO 1|FIFO 1|
+1|200000|4|FIFO 1|FIFO 1|FIFO 1|FIFO 1|
+
+As informações de execução das threads:
 
 Contagem letras:
 
-- (PID 10662) a: 200000KB
-- (PID 10663) b: 0KB
-- (PID 10664) c: 0KB
-- (PID 10665) d: 0KB
- 
+- (PID 5964) a: 200000KB
+- (PID 5965) b: 0KB
+- (PID 5966) c: 0KB
+- (PID 5967) d: 0KB
+
+O terceiro teste utiliza a politica FIFO que roda o primeiro processo até ele acabar, for interrompido, ou preemptado por outro com prioridade maior. Como as prioridades são iguais só o primeiro processo conseguiu rodar, o que é o esperado.
+
+
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/ks-img.png" width="800">
   
@@ -177,11 +188,13 @@ Contagem letras:
 
 ## Teste 4
 
-No teste do Round Robin foram utilizadas 4 threads com prioridade igual. A execução dos processos foi parelha, assim como no batch, mas com tempos de execução menores devido ao quantum
+O objetivo do teste 4 é avaliar o comportamente da política round-robin para processos de mesma prioridade:
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|
 --- | --- | --- |  --- | --- |  --- | --- |
-1|1000000|4|SCHED_RR 1|SCHED_RR 1|SCHED_RR 1|SCHED_RR 1|
+1|200000|4|SCHED_RR 1|SCHED_RR 1|SCHED_RR 1|SCHED_RR 1|
+
+Os resultados obtidos dos testes foram:
 
 Contagem letras:
 
@@ -189,6 +202,11 @@ Contagem letras:
 - (PID 5886) b: 50875KB
 - (PID 5887) c: 75794KB
 - (PID 5888) d: 60909KB
+
+No teste do Round Robin foram utilizadas 4 threads com prioridade igual. Aqui, conseguimos comparar a diferença das duas políticas de mesma classe, round robin e fifo. Na política round-robin, conseguimos ver que a o escalonador ao verificar que todos processos que estavam na fila real-time tinham mesma prioridade, passou a atribuir a execução da cpu de forma a respeitar o *quantum*. Um comportamente que fica fácil de identificar quando visualizamos o log de trocas de contexto no wireshark é que muitas vezes o *quantum* de uma task acaba enquanto a thread está com o lock do mutex. Ou seja está na zona crítica de execução, isso faz com que a thread que seria a pŕoxima a ser executada pelo escalonador não consiga de fato acesso à memória. O escalonador então vai se movendo pela fila até chegar no final dela, dando a execução novamente à thread que está com o lock. A média de acesso por thread foi de 49999KB com desvio-padrão de 27063. Quando comparamos a média e desvio-padrão do Teste 4 para o Teste 1,
+ 
+
+
 
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/ks-img.png" width="800">
@@ -230,7 +248,7 @@ Nesse teste de algoritmos escalonamento de tempo real pode-se ver que threads de
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|th5|th6|th7|th8|
 --- | --- | --- |  --- | --- |  --- | --- |  --- | --- |  --- | --- |
-4|100000|8|OTHER 0|FIFO 0|RR 1|FIFO 1|FIFO 1|RR 10|FIFO 10|RR 10|
+4|100000|8|OTHER 0|OTHER 0|RR 1|FIFO 1|FIFO 1|RR 10|FIFO 10|RR 10|
 
 Contagem letras:
 
