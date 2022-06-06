@@ -139,27 +139,29 @@ Podemos verificar que tanto a saída textual, apresentada acima, como a saída g
 
 ## Teste 2 
 
-Neste teste foram utilizadas 4 threads com prioridades iguais e escalonadores batch. Como esperado as três primeiras threads obtiveram cargas semelhantes, porém a quarta thread obteve uma carga menor, o que possívelmente seria balanceado caso a execução do programa continuasse. 
+Neste teste foram utilizadas 3 threads com prioridades iguais e escalonadores batch, junto a elas, atribuímos à thread 4 a política IDLE. 
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|
 --- | --- | --- |  --- | --- |  --- | --- |
-1|10000|4|BATCH 0|BATCH 0|BATCH 0|BATCH 0|
+1|1000000|4|BATCH 0|BATCH 0|BATCH 0|IDLE 0|
 
 Contagem letras:
+                
+- (PID 9463) a: 326150KB
+- (PID 9464) b: 339542KB
+- (PID 9465) c: 331073KB
+- (PID 9466) d: 3233KB
 
-- (PID 10156) a: 3442KB
-- (PID 10157) b: 3167KB
-- (PID 10158) c: 3150KB
-- (PID 10159) d: 239KB
+Acreditamos que para este teste, o batch deve ter comportamento semelhante à política do SCHED_OTHER, pela execução do programa não tratar ou esperar nenhum tipo de interrupção. A discrepância da quarta thread com as anteriores se da pela sua política ser de baixa prioridade, indicando que aquela thread não está executando no momento um trabalho que exija controle da cpu.
 
-Acreditamos que para este teste, o batch deve ter comportamento semelhante à política do SCHED_OTHER, pela execução do programa não tratar ou esperar nenhum tipo de interrupção. A discrepância da quarta thread com as anteriores se da, por termos usado uma quantidade muito pequena de memória a ser escrita. A visualização gráfica da execução nos mostra a semelhança no comportamento da política em relação ao teste 1.
+ Como esperado, as três primeiras threads executaram trabalhos semelhantes, a média de trabalho executado pelas 3 foi de 332255KB com desvio padrão 6773. A quarta thread quando comparada com as outras três realizou aproximadamente 1% do trabalho
 
  <p float="left">
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/KS-img.png" width="800">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/ks-img.png" width="800">
   
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/colors.png" width="40"/>
  </p>
- 
+ .
  
 ## Teste 3
 A configuração do teste 3 se encontra na tabela abaixo:
