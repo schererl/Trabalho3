@@ -139,7 +139,7 @@ Podemos verificar que tanto a saída textual, apresentada acima, como a saída g
 
 ## Teste 2 
 
-Neste teste foram utilizadas 4 threads com prioridades iguais e escalonadores batch. Como esperado as três primeiras threads obtiveram tempos semelhantes, porém a quarta thread obteve um tempo muito menor, o que possívelmente seria balanceado caso a execução do programa continuasse. 
+Neste teste foram utilizadas 4 threads com prioridades iguais e escalonadores batch. Como esperado as três primeiras threads obtiveram cargas semelhantes, porém a quarta thread obteve uma carga menor, o que possívelmente seria balanceado caso a execução do programa continuasse. 
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|
 --- | --- | --- |  --- | --- |  --- | --- |
@@ -203,9 +203,9 @@ Contagem letras:
 - (PID 5887) c: 75794KB
 - (PID 5888) d: 60909KB
 
-No teste do Round Robin foram utilizadas 4 threads com prioridade igual. Aqui, conseguimos comparar a diferença das duas políticas de mesma classe, round robin e fifo. Na política round-robin, conseguimos ver que a o escalonador ao verificar que todos processos que estavam na fila real-time tinham mesma prioridade, passou a atribuir a execução da cpu de forma a respeitar o *quantum*. Um comportamente que fica fácil de identificar quando visualizamos o log de trocas de contexto no wireshark é que muitas vezes o *quantum* de uma task acaba enquanto a thread está com o lock do mutex. Ou seja está na zona crítica de execução, isso faz com que a thread que seria a pŕoxima a ser executada pelo escalonador não consiga de fato acesso à memória. O escalonador então vai se movendo pela fila até chegar no final dela, dando a execução novamente à thread que está com o lock. 
+No teste do Round Robin foram utilizadas 4 threads com prioridade igual. Aqui, conseguimos comparar a diferença das duas políticas de mesma classe, RR e FIFO. Na política Round-Robin, conseguimos ver que o escalonador designa a execução da cpu de forma a respeitar o *quantum*. Um comportamente que fica fácil de identificar quando visualizamos o log de trocas de contexto no wireshark é que muitas vezes o *quantum* de uma task acaba enquanto a thread está com o lock do mutex. Ou seja está na zona crítica de execução, isso faz com que a thread que seria a pŕoxima a ser executada pelo escalonador não consiga de fato acesso à memória. O escalonador então vai se movendo pela fila até chegar no final dela, dando a execução novamente à thread que está com o lock. 
 
-A média de acesso por thread foi de 49999KB com desvio-padrão de 27063. O desvio padrão é relativamente alto já que estamos testando uma política que busca distribuir igualitariamente o uso da cpu, acreditamos que existam duas explicações para isso. A primeira como comentado anteriormente, devido a nossa aplicação ter zona crítica, acaba alterando a ordem de execução da política que tenta passar a cpu para a próxima thread da fila mas não cosnegue. Outra explicação e que acreditamos que iria acabar reduzindo o primeiro problema seria destinar um maior tamanho de memória, dessa forma a política teria oportunidade de reduzir o desvio-padrão gradativamente.
+A média de acesso por thread foi de 49999KB com desvio-padrão de 27063. O desvio padrão é relativamente alto já que estamos testando uma política que busca distribuir igualitariamente o uso da cpu, acreditamos que existam duas explicações para isso: A primeira como comentado anteriormente, devido a nossa aplicação ter zona crítica, acaba alterando a ordem de execução da política que tenta passar a cpu para a próxima thread da fila mas não cosnegue. Outra explicação é que acreditamos que iria acabar reduzindo o primeiro problema seria destinar um maior tamanho de memória, dessa forma a política teria oportunidade de reduzir o desvio-padrão gradativamente.
  
 
  <p float="left">
@@ -255,7 +255,7 @@ CPU|MEM(kb)|Threads|th1|th2|th3|th4|th5|th6|th7|th8|
 --- | --- | --- |  --- | --- |  --- | --- |  --- | --- |  --- | --- |
 3|200000|8|OTHER 0|OTHER 0|RR 1|FIFO 1|RR 1|RR 1|RR 1|RR 10|
 
-Usamos 3 cpus para a execução de 8 threads. Três delas tem prioridade 10 e real-time. Queremos ver o que acontece com a última cpu que acreditamso que será a disputada. Pensamos que as threads com FIFO 1 e RR 1  irão alternar o seu uso.
+Usamos 3 cpus para a execução de 8 threads. Uma delas tem prioridade 10, quatro outras tem prioridade 1 e ainda temos 2 threads CFS.
 
 Contagem letras:
 
@@ -268,9 +268,7 @@ Contagem letras:
 - (PID 13864) g: 26804KB
 - (PID 13865) h: 64854KB
 
-Surpreendentemente, todas threads conseguiram acesso à alguma das cpus. As threads 13463, 13464,13465 como tinham maior prioridade, receberam praticamente cada uma, uma cpu para sí. No entano a cpu que restou ficou sendo distribuida entre as outras threads, mas o que não era esperado era que mesmo as threads 13458 e 13459 sendo SCHED_OTHER, ambas ainda sim tiveram um tempo reservado a elas para execução.
-
-A situação ocorrida no teste anterior, se repetiu neste. Algumas vezes a cpu era atribuído para uma thread externa ao programa. O interessante é que quando a cpu retorna a executar algumas das threads do programa, por um curto espaço de tempo podemos ver que as threads 13458 e 13459 ocupam a cpu.
+Surpreendentemente, todas threads conseguiram acesso à alguma das cpus. A thread 8 (13865) como tinha maior prioridade, recebeu praticamente uma cpu para sí. As cpus restantes foram disputadas principalmente pelas threads *real-time* com prioridade 1 (threads 3,4,5,6 e 7). Curiosamente, as threads 0 e 1 da classe CFS também tiveram seu tempo, mesmo que ínfimo para executar algum trabalho. Se aproximarmos o gráfico, podemos ver que por curtos momentos a thread 1 e 2 assumem a cpu, no momento que as threads *real-time* trocam de contexto.
 
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/ks-img.png" width="800">
