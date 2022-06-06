@@ -1,15 +1,21 @@
-sudo taskset --cpu-list 1 ./run 4 100000 SCHED_FIFO 1 SCHED_FIFO 1 SCHED_FIFO 1 SCHED_FIFO 1 
+sudo taskset --cpu-list 1 ~/Trabalho3/./run 4 200000 sched_fifo 1 sched_fifo 1 sched_fifo 1 sched_fifo 1
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_FIFO PRI_MIN: 1 PRI_MAX: 99
+priority: 1
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_FIFO PRI_MIN: 1 PRI_MAX: 99
+priority: 1
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_FIFO PRI_MIN: 1 PRI_MAX: 99
+priority: 1
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_FIFO PRI_MIN: 1 PRI_MAX: 99
+priority: 1
 
 
 CHAR COUNTER:
-(PID 10662) a: 100000KB
-(PID 10663) b: 0KB
-(PID 10664) c: 0KB
-(PID 10665) d: 0KB
+(PID 5964) a: 200000KB
+(PID 5965) b: 0KB
+(PID 5966) c: 0KB
+(PID 5967) d: 0KB
 
-
-KERNELSHARK COLORS:
-PID 10662: verde
-PID 10663: marrom
-PID 10664: vermelho
-PID 10665: roxo
