@@ -1,0 +1,10 @@
+
+#run trace
+sudo trace-cmd record -e sched:sched_switch
+
+#compile app
+gcc ./setpriority.c -o setpriority -lpthread
+
+
+#running example
+sudo taskset --cpu-list 1 ./setpriority 4 1000000 sched_batch 0 sched_batch 0 sched_batch 0 sched_idle 0

@@ -1,17 +1,21 @@
-
-sudo taskset --cpu-list 1 ./run 4 10000 SCHED_BATCH 0 SCHED_BATCH 0 SCHED_BATCH 0 SCHED_IDLE 0 
+sudo taskset --cpu-list 1 ./setpriority 4 1000000 sched_batch 0 sched_batch 0 sched_batch 0 sched_idle 0
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_BATCH PRI_MIN: 0 PRI_MAX: 0
+priority: 0
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_BATCH PRI_MIN: 0 PRI_MAX: 0
+priority: 0
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_BATCH PRI_MIN: 0 PRI_MAX: 0
+priority: 0
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_IDLE PRI_MIN: 0 PRI_MAX: 0
+priority: 0
 
 
 CHAR COUNTER:
-(PID 10156) a: 3442KB
-(PID 10157) b: 3167KB
-(PID 10158) c: 3150KB
-(PID 10159) d: 239KB
+(PID 9463) a: 326150KB
+(PID 9464) b: 339542KB
+(PID 9465) c: 331073KB
+(PID 9466) d: 3233KB
 
-
-KERNELSHARK COLORS:
-
-PID 10156: laranja
-PID 10157: rosa
-PID 10158: roxo
-PID 10159: azul
