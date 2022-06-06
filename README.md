@@ -200,7 +200,7 @@ Contagem letras:
  
 ## Teste 5
 
-O algoritmo other procura balancear as threads por tempo, o que gera uma contagem de letras ainda mais parelha e intercalada para os primeiros 7 processos, enquanto a última thread recebe um tempo muito menor devido a sua prioridade maior.
+O algoritmo other procura balancear as threads por tempo, o que gera uma contagem de letras ainda mais parelha e intercalada para os primeiros 7 processos, enquanto a última thread recebe um tempo muito menor devido a sua prioridade maior. O kernel shark mostra que essa thread dominou a segunda CPU, rodando sempre que possível, enquanto as outras ficaram limitadas a primeira CPU.
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|th5|th6|th7|th8|
 --- | --- | --- |  --- | --- |  --- | --- |  --- | --- |  --- | --- |
@@ -226,7 +226,7 @@ Contagem letras:
  
 ## Teste 6
 
-
+Nesse teste de algoritmos escalonamento de tempo real pode-se ver que threads de prioridade igual executaram por tempos semelhantes mesmo com politicas diferentes. Por ter uma prioridade consideravelmente maior, as últimas três threads praticamente dominaram três das quatro CPUs, mas ainda foram intercalados outros processos entre suas execuções devido as propriedades anti-starvation dos algoritmos utilizados.
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|th5|th6|th7|th8|
 --- | --- | --- |  --- | --- |  --- | --- |  --- | --- |  --- | --- |
