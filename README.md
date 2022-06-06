@@ -93,11 +93,6 @@ void *run(void *data)
 }
 ```
 
-
-
-## Scripts_Usados
-
-
 # Testes
 
 Para os testes rodados, primeiro foi definido um critério de análise das políticas. Como tempos uma gama de escalonadores e podemos usar diferentes métodos em diferentes threads, vamos definir primeiro situações interessantes para avaliarmos:
