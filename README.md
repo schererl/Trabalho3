@@ -134,6 +134,8 @@ Contagem letras:
 
 ## Teste 2 
 
+Neste teste foram utilizadas 4 threads com prioridades iguais e escalonadores batch. Como esperado as três primeiras threads obtiveram tempos semelhantes, porém a quarta thread obteve um tempo muito menor, o que possívelmente seria balanceado caso a execução do programa continuasse. 
+
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|
 --- | --- | --- |  --- | --- |  --- | --- |
 1|10000|4|BATCH 0|BATCH 0|BATCH 0|BATCH 0|
@@ -154,6 +156,8 @@ Contagem letras:
  
 ## Teste 3
 
+O terceiro teste utiliza a politica FIFO que roda o primeiro processo até ele acabar, for interrompido, ou preemptado por outro com prioridade maior. Como as prioridades são iguais só o primeiro processo conseguiu rodar, o que é o esperado.
+
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|
 --- | --- | --- |  --- | --- |  --- | --- |
 1|100000|4|FIFO 1|FIFO 1|FIFO 1|FIFO 1|
@@ -172,6 +176,8 @@ Contagem letras:
  </p>
 
 ## Teste 4
+
+No teste do Round Robin foram utilizadas 4 threads com prioridade igual. A execução dos processos foi parelha, assim como no batch, mas com tempos de execução menores devido ao quantum
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|
 --- | --- | --- |  --- | --- |  --- | --- |
@@ -193,6 +199,8 @@ Contagem letras:
  
  
 ## Teste 5
+
+O algoritmo other procura balancear as threads por tempo, o que gera uma contagem de letras ainda mais parelha e intercalada para os primeiros 7 processos, enquanto a última thread recebe um tempo muito menor devido a sua prioridade maior.
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|th5|th6|th7|th8|
 --- | --- | --- |  --- | --- |  --- | --- |  --- | --- |  --- | --- |
@@ -217,6 +225,8 @@ Contagem letras:
  
  
 ## Teste 6
+
+
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|th5|th6|th7|th8|
 --- | --- | --- |  --- | --- |  --- | --- |  --- | --- |  --- | --- |
