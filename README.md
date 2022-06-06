@@ -2,17 +2,31 @@
 
 Victor Putrich, Lucca Dornelles e Guilherme Santos
 
-# Sobre
+<!--ts-->
+   * [Introdução](#Introdução)
+   * [Escalonadores](#Escalonadores)
+   * [CFS](##CFS)
+   * [Real-time](##Real-time)
+   * [Implementação](#Implementação)
+   * [Testes](#Testes)
+   * [Teste 1](##Teste1)
+   * [Teste 2](##Teste2)
+   * [Teste 3](##Teste3)
+   * [Teste 4](##Teste4)
+   * [Teste 5](##Teste5)
+   * [Teste 6](##Teste6)
+<!--te-->
 
-## Introdução
+
+# Introdução
 Este relatório visa apresentar e avaliar os resultados das execuções de um programa multithread e seus diferentes escalonamentos de acordo com a mudança de politica de escalonamento selecionada, além da mudança em ambientes de processamento multicore e single-core.
 
 O objetivo deste trabalho é a criação de um programa multithread com um número específico de threads que escrevem caracteres em um buffer global. A escrita no buffer é sincronizada, de forma que não ocorra sobrescrita de uma posição, pois assim é possivel verificar o escalonamento das threads durante a execução através da leitura do conteudo do buffer. Para facilitar a analise, ao concluir a execução o programa mostra a leitura do buffer e a contagem de quantas vezes cada caracter foi escalonado.
 
-## Escalonadores
+# Escalonadores
 No nosso programa existe um grupo de escalonadores que podem ser utilizados, estes estão divididos em *Completely Fair Scheduler* (CFS) e *Real-time scheduler*. Dentro dessas duas classes, existem diferentes políticas disponibilizadas pelo sistema operacional que podem ser explicitamente definidas ao abrir um thread na execução do programa. Algumas políticas ainda tem disponível um intervalo de prioridade que varia de política para política. O escalonador usa a política aliada à prioridade *sched_priority* para tomar a decisão de qual thread deve ganhar o uso da cpu.
 
-### CFS
+## CFS
 As três políticas CSF disponibilizadas para uso no sistemas Linux não tem diferenciação através do parâmetro *sched_priority*, portanto todos são passados com valor 0.
 
   * **SCHED_OTHER:** Esta é a política default do Linux. Não existe uma prioridade que pode ser definida de forma estática para os processos, ao invés disso as threads que forem usar essa política, tem um valor de prioridade dinâmica chamado "nice value". O objetivo desse atributo é garantir que todas as threads possam vir a "progredir" de forma justa. O valor é ajustado para cada "quantum" que as threads estão em estado *ready*.
@@ -21,7 +35,7 @@ As três políticas CSF disponibilizadas para uso no sistemas Linux não tem dif
   
   * **SCHED_IDLE:** Nesta política não há prioridade estática ou dinâmica, tarefas que usam essa política tem como objetivo ser de baixíssima prioridade.
 
-### Real-time
+## Real-time
 
 Aquelas threads que usam as políticas real-time fazem uso do *sched_priority* que tem o intervalo de 1 a 99. Sendo 1 o valor mínimo e 99 o valor máximo. A diferença entre as duas políticas não está entre threads com diferentes prioridades, a thread com maior prioridade sempre vai ganhar acesso à cpu, preemptando a thread corrente. A mudança entre elas está na decisão do que fazer entre threads que tem a mesma prioridade e em que posição na fila adicionar novas threads com diferentes prioridades. Importante comentar que threads que tiverem usando políticas real-time sempre terão preferência sobre a políticas CFS.
 
@@ -31,9 +45,9 @@ Aquelas threads que usam as políticas real-time fazem uso do *sched_priority* q
   
   * **SCHED_DEADLINE** A política em questão é usado para o cumprimento das chamadas *sporadic tasks* que é composta por um conjunto de *jobs*. São executados um *job* por vez, e cada um tempo um tempon de *deadline* que seria o momento que o programa a ser executado, caso já não tenha realizado o seu trabalho, acaba descartando todo trabalho feito até em tão. Cada *job* a ser executado é composto por duas características, a *relative deadline* e o tempo de execução. A chamada *absolute deadline* é a soma destes dois valores.
   
-## Implementação
+# Implementação
 
-### Argumentos_de_Entrada
+## Argumentos_de_Entrada
 Para executarmos a nossa aplicação precisamos informar primeiro o número de threads usadas e o tamanho da memório, além disso, para cada thread precisamos explicitamente definir qual a política, podendo ser qualquer uma das listadas anteriormente e a sua respectiva prioridade que varia de política para política. Podemos verificar o formato da entrada logo abaixo:
 
 ```
@@ -46,7 +60,7 @@ Podemos rodar por exemplo 4 threads com a política round-robin, todas com prior
   ./setpriority 4 100000 SCHED_RR 1 SCHED_RR 1 SCHED_RR 1 SCHED_RR 1 SCHED_RR 1 SCHED_RR 1
 ```
 
-### Função_Run
+## Função_Run
 
 Para que pudéssemos acompanhar as políticas de escalonamento competindo pelo controle da CPU para escrever a sua letra na memória, definimos dentro da função "run" o método de acesso da memória que pode ser vista por todas as threads do programa. Pimeiramente, para que todas as threads concorram pelo acesso à cpu de forma justa, no início da função usamos um método de sincronização via *mutex* que será explicado posteriormente, isto faz com que todas threads iniciem o processamento de fato juntas. Cada thread recebe uma letra que é passada pelo parâmetro *void data* da função. Este parâmetro é um valor de deslocamento que é incrementado ao caracter inicial do alfabeto. Como o programa foi escrito em C, basta somarmos a 'a' o valor de offset e teremos o caractere da thread correspondente. 
 
@@ -57,7 +71,7 @@ Para que pudéssemos acompanhar as políticas de escalonamento competindo pelo c
 A parte principal do programa consiste num while que roda enquanto a memória não estiver preenchida por completo, isso é feito comparado o tamanho máximo de memória *SIZE_BUF* com um contador que serve para sempre apontar para a próxima posição de memória a ser escrita *index_mem*. O while ocorre enquanto o index for menor ou igual ao tamanho máximo de memória. 
 
 
-#### Controle de Acesso
+### Controle de Acesso
 Utilizamos dois objetos mutex para coordenar o funcionamento das threads. 
 
  * **simLock** trava qualquer thread que tente rodar antes que todas sejam inicializadas, fazendo com que todas threads comecem simultaneamente. 
@@ -92,7 +106,7 @@ void *run(void *data)
 ## Scripts_Usados
 
 
-## Testes
+# Testes
 
 Para os testes rodados, primeiro foi definido um critério de análise das políticas. Como tempos uma gama de escalonadores e podemos usar diferentes métodos em diferentes threads, vamos definir primeiro situações interessantes para avaliarmos:
 
@@ -104,7 +118,8 @@ Para os testes rodados, primeiro foi definido um critério de análise das polí
  
  * **Classes Diferentes:** Veremos como o escalonador se comporta quando rodamos threads que estão usam alguma das políticas da classe CFS, assim como políticas de classe real-time. Podemoremos acompanhar o escalonamento destas usando 1, 2 ou + cpus. 
 
-### Teste 1
+## Teste 1
+
 A tabela abaixo descreve a configuração usada para este teste, nele testaremos o comportamento do escalonador mesclando 4 escalonados CSF Other, com uma política real-time com prioridade máxima com 2 CPUs. O comportamento esperado é que uma das cpus fique 100% do tempo ocupada pela política RR e a outra utilize a sua lógica de escalonamento para escalonar as diferentes threads:
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|
@@ -119,13 +134,13 @@ Contagem letras:
 - (PID 12255) d: 248892KB
 
  <p float="left">
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste1/ks-img.png" width="850">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste1/ks-img.png" width="800">
   
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste1/colors.png" width="70"/>
  </p>
  
 
-### Teste 2 
+## Teste 2 
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|
 --- | --- | --- |  --- | --- |  --- | --- |
@@ -139,13 +154,13 @@ Contagem letras:
 - (PID 10159) d: 239KB
 
  <p float="left">
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/KS-img.png" width="850">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/KS-img.png" width="800">
   
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste2/colors.png" width="70"/>
  </p>
  
  
-### Teste 3
+## Teste 3
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|
 --- | --- | --- |  --- | --- |  --- | --- |
@@ -159,12 +174,12 @@ Contagem letras:
 - (PID 10665) d: 0KB
  
  <p float="left">
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/ks-img.png" width="850">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/ks-img.png" width="800">
   
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/colors.png" width="70"/>
  </p>
 
-### Teste 4
+## Teste 4
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|
 --- | --- | --- |  --- | --- |  --- | --- |
@@ -178,14 +193,14 @@ Contagem letras:
 - (PID 11748) d: 283628KB
 
  <p float="left">
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/ks-img.png" width="850">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/ks-img.png" width="800">
   
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/color.png" width="70"/>
  </p>
  
  
  
-### Teste 5
+## Teste 5
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|th5|th6|th7|th8|
 --- | --- | --- |  --- | --- |  --- | --- |  --- | --- |  --- | --- |
@@ -203,13 +218,13 @@ Contagem letras:
 - (PID 12921) h: 34169KB
 
  <p float="left">
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/ks-img.png" width="850">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/ks-img.png" width="800">
   
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste5/colors.png" width="70"/>
  </p>
  
  
-### Teste 6
+## Teste 6
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|th5|th6|th7|th8|
 --- | --- | --- |  --- | --- |  --- | --- |  --- | --- |  --- | --- |
@@ -227,7 +242,7 @@ Contagem letras:
 - (PID 13465) h: 21119KB
 
  <p float="left">
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/ks-img.png" width="850">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/ks-img.png" width="800">
   
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste6/colors.png" width="70"/>
  </p>
