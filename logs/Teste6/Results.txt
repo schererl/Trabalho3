@@ -1,0 +1,37 @@
+sudo taskset --cpu-list 1,2,3 ./run 8 200000 sched_other 0 sched_other 0 sched_rr 1 sched_fifo 1 sched_rr 1 sched_rr 1 sched_rr 1 sched_rr 10
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+priority: 0
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+priority: 0
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_RR PRI_MIN: 1 PRI_MAX: 99
+priority: 1
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_FIFO PRI_MIN: 1 PRI_MAX: 99
+priority: 1
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_RR PRI_MIN: 1 PRI_MAX: 99
+priority: 1
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_RR PRI_MIN: 1 PRI_MAX: 99
+priority: 1
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_RR PRI_MIN: 1 PRI_MAX: 99
+priority: 1
+current: SCHED_OTHER PRI_MIN: 0 PRI_MAX: 0
+new: SCHED_RR PRI_MIN: 1 PRI_MAX: 99
+priority: 10
+
+
+CHAR COUNTER:
+(PID 13858) a: 364KB
+(PID 13859) b: 345KB
+(PID 13860) c: 26962KB
+(PID 13861) d: 27097KB
+(PID 13862) e: 26859KB
+(PID 13863) f: 26711KB
+(PID 13864) g: 26804KB
+(PID 13865) h: 64854KB
+
