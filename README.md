@@ -164,13 +164,13 @@ CPU|MEM(kb)|Threads|th1|th2|th3|th4|
 
 Contagem letras:
 
-- (PID 10662) a: 100000KB
+- (PID 10662) a: 200000KB
 - (PID 10663) b: 0KB
 - (PID 10664) c: 0KB
 - (PID 10665) d: 0KB
  
  <p float="left">
-  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/ks-img.png" width="650">
+  <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/ks-img.png" width="800">
   
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste3/colors.png" width="50"/>
  </p>
@@ -181,14 +181,14 @@ No teste do Round Robin foram utilizadas 4 threads com prioridade igual. A execu
 
 CPU|MEM(kb)|Threads|th1|th2|th3|th4|
 --- | --- | --- |  --- | --- |  --- | --- |
-1|1000000|4|SCHED_RR 99|SCHED_RR 99|SCHED_RR 99|SCHED_RR 99|
+1|1000000|4|SCHED_RR 1|SCHED_RR 1|SCHED_RR 1|SCHED_RR 1|
 
 Contagem letras:
 
-- (PID 11745) a: 303013KB
-- (PID 11746) b: 219496KB
-- (PID 11747) c: 193862KB
-- (PID 11748) d: 283628KB
+- (PID 5885) a: 12421KB
+- (PID 5886) b: 50875KB
+- (PID 5887) c: 75794KB
+- (PID 5888) d: 60909KB
 
  <p float="left">
   <img src="https://github.com/schererl/Trabalho3/blob/master/logs/Teste4/ks-img.png" width="800">
