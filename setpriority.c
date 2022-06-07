@@ -7,22 +7,28 @@
 #include <syscall.h>
 #define KB 1024
 
-int SIZE_BUF;// 1000000
+int SIZE_BUF;
 char*  mem;
 int* pids;
 int index_mem = 0; 
-pthread_mutex_t simLock, lock;
-
+pthread_mutex_t lock;
+pthread_barrier_t barrier;
 
 void *run(void *data)
 {
 	//iniciar todas threads "simultaneamente"
-	pthread_mutex_lock(&simLock);
-	pthread_mutex_unlock(&simLock);
+	int retorno = pthread_barrier_wait(&barrier);
+	pids[(int)data] = syscall(SYS_gettid);
 	
+    if (retorno != 0 && retorno != PTHREAD_BARRIER_SERIAL_THREAD){
+		printf("Erro na barreira %d", pids[(int)data]);
+		return -1;
+	}
+        
+
+
 	char letter = 'a'+(int)data;
 	
-	pids[(int)data] = syscall(SYS_gettid);
 	while (index_mem <= SIZE_BUF){		
 		pthread_mutex_lock(&lock);
 		mem[index_mem] = letter;
@@ -35,7 +41,6 @@ void *run(void *data)
 
 void printMem(char *mem, const int threads){
 	char last_char = mem[0];
-	//int char_counter[threads] = {0};
 	int *char_counter = malloc(sizeof(int) * threads);
 
 	//printf("\n%c", mem[0]);
@@ -44,7 +49,7 @@ void printMem(char *mem, const int threads){
 	for(int i = 1; i < SIZE_BUF;i++){
 		if(last_char != mem[i]){
 			last_char = mem[i];
-	//		printf("%c", mem[i]);
+			//printf("%c", mem[i]);
 		}
 				
 		char_counter[(int)last_char - (int)'a'] += 1;
@@ -157,7 +162,11 @@ int main(int argc, char **argv)
 	}
 
 	const int threads = atoi(argv[1]);
-	//int SIZE_BUF = atoi(argv[2]);
+	if (pthread_barrier_init(&barrier, NULL, threads))
+		printf("Impossivel criar barreira");
+
+
+
 	SIZE_BUF = atoi(argv[2]) * KB;
 	mem = (char*)malloc(sizeof(char)*SIZE_BUF);
 	
@@ -182,16 +191,13 @@ int main(int argc, char **argv)
 	
 	pthread_t tid[threads];
 
-	if (pthread_mutex_init(&lock, NULL) != 0 || pthread_mutex_init(&simLock, NULL) != 0) {
+	if (pthread_mutex_init(&lock, NULL) != 0){
 	        printf("\n mutex init has failed\n");
         	return 1;
 	}
-	pthread_mutex_lock(&simLock);
-
+	
 	int erro;
 	for(int i = 0; i < threads; i++){
-		//printf("create %d %c\n", i, 'a'+i);
-		
 		erro = pthread_create(&tid[i], NULL, run, (void*)i);
 		if(erro != 0){
 			printf("THREAD ERRO\n");
@@ -201,14 +207,10 @@ int main(int argc, char **argv)
 		
 	}
 
-	pthread_mutex_unlock(&simLock);
 	for(int i = 0; i < threads; i++){
 		pthread_join(tid[i], NULL);
-		//if(i+1 == N_THREADS)
-		//printf("done %d\n",i);
 	}
 	pthread_mutex_destroy(&lock);
-	pthread_mutex_destroy(&simLock);
 	printMem(mem, threads);
 	free(mem);
 	printf("\n");
